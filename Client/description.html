@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+      <link type="text/css" rel="stylesheet" href="css/animate.css">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <style type="text/css">
+
+      .logo-img {
+          max-height: 64px!important;
+          padding: 6px 0!important;
+      }
+      .edel-blue {
+        background-color: #0C4CA3;
+      }
+      .edel-text {
+        color: #0C4CA3;
+      }
+    </style>
+    <body style="overflow: scroll;">
+
+     <nav>
+        <div class="nav-wrapper edel-blue hoverable ">
+          <a href="#!" class="brand-logo">
+            <img src="css/b.png" class="logo-img">
+          </a>
+          <a href="#!" class="brand-logo center">Company Profiler</a>
+          <ul class="right hide-on-med-and-down">
+            <li><a href=""><i class="material-icons">view_module</i></a></li>
+            <li><a href=""><i class="material-icons">refresh</i></a></li>
+            <li><a href=""><i class="material-icons">more_vert</i></a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <div id="data1" style="height: auto;width: 100vw;overflow: scroll;display: block;" class="white">
+          <div class="row"></div>
+           <div class="row container">
+            <div class="col s12">
+              
+      <div id="datapop2" class="col s12" style="margin-left: 20px;">
+          <ul class="collection" id="collect">
+            <!-- <li class="collection-item avatar">
+              <i class="material-icons circle green">insert_chart</i>
+              <div class="col s11"><span class="title" style="color: black">Title fsdggsfd gsdf gsdfg fg sf gfs g sfg sfg sdfg sf gs dfg gfhd fgh fdg hdfhg fh fhg h fdg sdf sd fsd fsd fs dfs dfs dfs d dsf sdf sf sf</span></div>
+              <p>
+
+                <div class="chip">
+                  Jane Doe
+                </div>
+              </p>
+              <div class="col s2"><a href="#fresh" class="secondary-content"><i class="material-icons">publish</i></a></div>
+            </li> -->
+          </ul>
+      </div>
+      </div></div></div>
+
+      <div id="loader" style="position: absolute;left: 50%;bottom: 20%;transform: translate(-50%,-50%); height: 15vh;" class="animated">
+        <div class="preloader-wrapper big active">
+            <div class="spinner-layer spinner-blue-only">
+                <div class="circle-clipper left">
+                  <div class="circle"></div>
+                  </div><div class="gap-patch">
+                  <div class="circle"></div>
+                  </div><div class="circle-clipper right">
+                  <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+      </div>
+      
+      <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+      <script type="text/javascript" src="js/materialize.min.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>
+      <script type="text/javascript">
+        $(document).ready(function(){
+          Materialize.toast('Wait for a While!', 60000, 'rounded')
+
+          var timeot = setInterval(function(){
+            var url = 'http://51.141.42.102:8081/readDetail';
+            $.ajax(url, {
+                          success: function(data) {
+                              if(data.length>1)
+                              {
+                                console.log(data[0].Tags)
+                                $("#loader").css("display","none");
+                                displayData(data)
+                                clearTimeout(timeot);
+
+                                function displayData(data){
+                                  for(var i=0;i<data.length;i++)
+                                  {
+                                    var str = '<li class="collection-item avatar"> <i class="material-icons circle green">insert_chart</i><div class="col s11"> <span class="title" style="color: black">'+data[i].Description+'</span></div> <p></p>';
+                                    var str2='<div class="col s12">&nbsp</div><p>';
+                                    for(var j=0;j<data[i].Tags.length;j++)
+                                    {
+                                      str2 =  str2 + '<div class="chip"> '+data[i].Tags[j]+' </div>';
+                                    }
+                                    str2 = str2 + '</p>';
+                                    
+                                    var str3 = '<div class="col s2"><a target="_blank" href="'+data[i].Url[0]+'" class="secondary-content"><i class="material-icons edel-text">publish</i></a></div></li>';
+
+                                    $("#collect").append(str+str2+str3)
+                                  }
+                                }                                 
+                              }
+                            },
+                            error: function() {
+                              
+                            }
+                          });
+
+
+          },5000)
+        });
+      </script>
+  </body>
+</html>

@@ -1,0 +1,595 @@
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+      <link type="text/css" rel="stylesheet" href="css/animate.css">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <style type="text/css">
+    	::-webkit-scrollbar { 
+		    display: none; 
+		  }
+      .logo-img {
+          max-height: 64px!important;
+          padding: 6px 0!important;
+      }
+      .edel-blue {
+        background-color: #0C4CA3;
+      }
+      .edel-text {
+        color: #0C4CA3;
+      }
+    </style>
+    <body style="overflow: scroll;">
+
+     <nav>
+        <div class="nav-wrapper edel-blue hoverable ">
+          <a href="#!" class="brand-logo">
+            <img src="css/b.png" class="logo-img">
+          </a>
+          <a href="#!" class="brand-logo center">Company Profiler</a>
+          <ul class="right hide-on-med-and-down">
+            <li><a href=""><i class="material-icons">view_module</i></a></li>
+            <li><a href=""><i class="material-icons">refresh</i></a></li>
+            <li><a href=""><i class="material-icons">more_vert</i></a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <div id="data1" style="height: auto;width: 100vw;overflow: scroll;display: block;" class="white">
+          <div class="row"></div>
+           <div class="row">
+            <div class="col s12 m3">
+              <div class="row">
+                <div class="input-field col s12 ">
+                  <i class="material-icons prefix">search</i>
+                  <input type="text" id="autocomplete-input" class="autocomplete">
+                  <label for="autocomplete-input">COMPANY NAME</label>
+                </div>
+                <div class="input-field col s12 ">
+                  <i class="material-icons prefix">location_on</i>
+                  <input id="icon_location" type="tel" class="validate">
+                  <label for="icon_location">LOCATION</label>
+                </div>
+                <div class="input-field col s12 ">
+                  <i class="material-icons prefix">stars</i>
+                  <input id="icon_stars" type="tel" class="validate">
+                  <label for="icon_stars">ACTIVITY</label>
+                </div>
+                
+                <div class="col 12">&nbsp</div>
+                <div class="col s12 center">
+                  <button id="submitForm" class="btn waves-effect waves-light edel-blue" type="submit" name="action">Submit
+                    <i class="material-icons right">send</i>
+                  </button>
+                </div>
+                <div class="col 12">&nbsp</div>
+                <div class="col 12">&nbsp</div>
+                <div class="col s12 center">
+                  <button id="description" class="btn waves-effect waves-light edel-blue disabled" type="submit" name="action">Description
+                    <i class="material-icons right">send</i>
+                  </button>
+                </div>
+                <div class="col 12">&nbsp</div>
+                <!-- <div class="input-field col s12 ">
+                  <i class="material-icons prefix">language</i>
+                  <input id="icon_lang" type="tel" class="validate">
+                  <label for="icon_lang">GENERAL</label>
+                </div> -->
+              </div>
+            </div>
+      <div id="datapop2" class="col s12 m8" style="margin-left: 20px;">
+              
+
+          <!-- <div class="row" style="display: block">
+            <div class="col s8">
+              <ul class="collection" id="datapop">
+        
+              </ul>
+            </div>
+          </div> -->
+
+          <!-- <ul class="collection">
+            <li class="collection-item avatar">
+              <i class="material-icons circle green">insert_chart</i>
+              <span class="title" style="color: black">Title</span>
+              <p></p>
+              <p>
+                <div class="chip">
+                  Jane Doe
+                </div>
+              </p>
+              <a href="#fresh" class="secondary-content"><i class="material-icons">publish</i></a>
+            </li>
+          </ul> -->
+        
+      </div>
+      
+      <div id="data2" style="position: absolute;left:-100%;height: auto;width: 100vw;overflow: scroll;display: block;" class="">
+		    
+      </div>
+      <div id="downloadButton" style="position: fixed;bottom: 10%;right: 10%;display: none" onclick="javascript:demoFromHTML();">
+        <a class="btn btn-floating btn-large pulse edel-blue"><i class="material-icons">system_update_alt</i></a>
+      </div>
+
+      <div id="logo" style="position: absolute;left: 50%;bottom: 15%;transform: translate(-50%,-50%); height: 15vh;display: block;" class="animated">
+        <img src="css/a.png" height="100%" width="auto">
+      </div>
+      <div id="loader" style="position: absolute;left: 50%;bottom: 20%;transform: translate(-50%,-50%); height: 15vh;display: none;" class="animated">
+        <div class="preloader-wrapper big active">
+            <div class="spinner-layer spinner-blue-only">
+                <div class="circle-clipper left">
+                  <div class="circle"></div>
+                  </div><div class="gap-patch">
+                  <div class="circle"></div>
+                  </div><div class="circle-clipper right">
+                  <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+      </div>
+      
+      <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+      <script type="text/javascript" src="js/materialize.min.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>
+      <script type="text/javascript">
+        $(document).ready(function(){
+            
+            var uri = 'http://51.141.38.89:8081';
+
+            $('input.autocomplete').autocomplete({
+              data: {
+                "Apple": null,
+                "Microsoft": null,
+                "Google": 'https://placehold.it/250x250'
+              },
+              limit: 5, 
+              onAutocomplete: function(val) {
+               
+              },
+              minLength: 1, 
+            });
+
+            $("#submitForm").on("click",function(event) {
+                    $("#datapop2").html('<ul class="collection" id="datapop"></ul>')
+                    $("#downloadButton").css("display","none")
+                    $("#datapop").html('')
+                    $("#loader").removeClass()
+                    $("#logo").addClass('zoomOut')
+                    $("#loader").css('display','block')
+                    $("#loader").addClass('animated fadeIn')
+                    setTimeout(function(){
+                      var url = uri+'/sql?term='+ $("#autocomplete-input").val() +'&term2='+$("#icon_location").val() +'&term3='+$("#icon_stars").val()
+                      var getData = ()=>{
+                          $.ajax(url, {
+                            success: function(data) {
+                            	if(data.length>0)
+                            	{
+                            		var populatedData = (data) => {
+	                              	for(var i=0;i<data.length;i++)
+	                              	{
+	                              		var str = '<a href="#" class="collection-item avatar comp"><i class="material-icons circle">insert_chart</i><span class="title">'+data[i].name+'</span><p>'+data[i].cin+'<br>'+data[i].address+'</p></a>'
+	                              		$("#datapop").append(str)
+	                              	}
+	                              }
+
+	                              populatedData(data)
+	                              $("#loader").removeClass('fadeIn')
+	                              $("#loader").addClass('fadeOut')
+	                              Materialize.toast('Results Found!', 4000, 'rounded')
+                            	}
+                            	else
+                            	{
+                            		Materialize.toast('Nothing Found!', 4000, 'rounded')
+		                            $("#loader").removeClass('fadeIn')
+		                            $("#loader").addClass('fadeOut')
+		                            $("#logo").removeClass('zoomOut')
+		                          	$("#logo").addClass('zoomIn')
+                            	}
+                            },
+                            error: function() {
+                              Materialize.toast('Error Occured!', 4000, 'rounded')
+                              $("#loader").removeClass('fadeIn')
+                              $("#loader").addClass('fadeOut')
+                              $("#logo").removeClass('zoomOut')
+                              $("#logo").addClass('zoomIn')
+                            }
+                         });
+                      }
+                      getData()
+
+                    },2000)  
+            });
+
+          $("#description").on("click",function(){
+              var term1 =localStorage.roc;
+              var term2 = localStorage.dl;
+              var term3 = localStorage.act;
+              var url = uri+'/detail?term1='+ $("#autocomplete-input").val() +'&term2='+term2+'&term3='+term3+'&term4='+ term1;
+              $.ajax(url, {
+                            success: function(data) {
+                              var win = window.open('/crawler.html', '_blank');
+                              if (win) {
+                                  win.focus();
+                              } else {
+                                  alert('Please allow popups for this website');
+                              }
+                            },
+                            error: function() {
+                              Materialize.toast('Error! Try Again', 4000, 'rounded')
+                            }
+                          });
+          });
+
+
+        	$("#datapop2").on("click","a.comp",function(){
+          
+		      var index = $(".comp").index(this);		       
+		      var comp = $($(".comp")[index]).find("span").html()
+          localStorage.comp = comp;
+		      var url = uri+'/sql/sql?term='+ comp;
+		      //$("#data1").css("display","none")
+		      $('#data2').css("display","block")
+		      $("#loader").css('display','block')
+          $("#loader").removeClass('fadeOut')
+          $("#loader").addClass('animated fadeIn')
+		      	var getData1 = ()=>{
+                          $.ajax(url, {
+                            success: function(data) {
+                              var populatedData1 = (data) => {
+                              	console.log(data)
+                                $("#downloadButton").css("display","block")
+                              	var str = '<div class="row"></div> <div class="row container"> <div class="col s12 hoverable animated fadeIn"> <table class="striped centered"> <thead> <tr> <th>Field</th> <th>Value</th> </tr> </thead> <tbody> <tr> <td>Company Name</td> <td>'+data[0].Name+'</td> </tr> <tr> <td>Address</td> <td>'+data[0].Address+'</td> </tr> <tr> <td>CIN</td> <td>'+data[0].CIN+'</td> </tr> <tr> <td>Activity</td> <td>'+data[0].Age+'</td> </tr> <tr> <td>Class</td> <td>'+data[0].Class+'</td> </tr> <tr> <td>Status</td> <td>'+data[0].Status+'</td> </tr> <tr> <td>RoC</td> <td>'+data[0].RoC+'</td> </tr> <tr> <td>Registration No</td> <td>'+data[0].Registration_No+'</td> </tr> <tr> <td>Registration Date</td> <td>'+data[0].Registration_Date+'</td> </tr> <tr> <td>Category</td> <td>'+data[0].Category+'</td> </tr> <tr> <td>Sub Category</td> <td>'+data[0].Sub_Category+'</td> </tr> <tr> <td>Listing Type</td> <td>'+data[0].Listing_Type+'</td> </tr> <tr> <td>Director List</td> <td>'+data[0].Director_List+'</td> </tr> <tr> <td>Authorised Capital</td> <td>'+data[0].Authorised_Capital+'</td> </tr> <tr> <td>Paid Up Capital</td> <td>'+data[0].Paid_Up_Capital+'</td> </tr> </tbody> </table> </div> </div>';
+                              	
+                                var str2 = '<div class="col s12 m12"> <div class="col s1 m1"> <div style="height: 55px;width: 55px;border-radius: 50%" class="edel-blue white-text valign-wrapper"><h4>&nbsp;&nbsp;'+data[0].Address[0]+'</h4> </div> </div> <div class="col s11 m11"> <h5><b>'+data[0].Name+'</b></h5> </div> </div> <div class="col s12 m6"> <div class="card-panel white hoverable" style="padding-top: 8px;"> <table class="striped bordered"> <tbody> <tr> <td><b>Address</b></td> <td>'+data[0].Address+'</td> </tr> <tr> <td><b>Category</b></td> <td>'+data[0].Category+'</td> </tr> <tr> <td><b>Sub Category</b></td> <td>'+data[0].Sub_Category+'</td> </tr> </tbody> </table> <hr> <table class="striped"> <tbody> <tr> <td><b>CIN</b></td> <td>'+data[0].CIN+'</td> </tr> <tr> <td><b>Registration No</b></td> <td>'+data[0].Registration_No+'</td> </tr> <tr> <td><b>Registration_Date</b></td> <td>'+data[0].Registration_Date+'</td> </tr> <tr> <td><b>Authorised Capital</b></td> <td>'+data[0].Authorised_Capital+'</td> </tr> <tr> <td><b>Paid Up Capital</b></td> <td>'+data[0].Paid_Up_Capital+'</td> </tr> </tbody> </table> </div> </div> <div class="col s12 m6"> <div class="card-panel white hoverable" style="padding-top: 8px;"> <table class="striped bordered"> <tbody> <tr> <td><b>Status</b></td> <td>'+data[0].Status+'</td> </tr> <tr> <td><b>RoC</b></td> <td>'+data[0].RoC+'</td> </tr> <tr> <td><b>Class</b></td> <td>'+data[0].Class+'</td> </tr> <tr> <td><b>Activity</b></td> <td>'+data[0].Activity+'</td> </tr> </tbody> </table> <hr> <table class="striped bordered"> <tbody> <tr> <td><b>Listing Type</b></td> <td>'+data[0].Listing_Type+'</td> </tr> <tr> <td><b>Date Last AGM</b></td> <td>'+data[0].Date_Last_AGM+'</td> </tr> <tr> <td><b>Balance Sheet Date</b></td> <td>'+data[0].Balance_Sheet_Date+'</td> </tr> </tbody> </table> <hr> <table class="striped bordered"> <tbody> <tr> <td><b>Director List</b></td> <td>'+data[0].Director_List+'</td> </tr> </tbody> </table> </div> </div>'
+                                localStorage.roc = data[0].RoC;
+                                localStorage.dl = data[0].Director_List;
+                                localStorage.act = data[0].Activity;
+                                $("#datapop2").html(str2);
+                                $("#data2").html(str);
+                                $("#description").removeClass('disabled');
+                              	setTimeout(()=>{
+                              		$("#loader").removeClass('fadeIn')
+                              		$("#loader").addClass('fadeOut')
+                              	},1500)
+                              }
+                              populatedData1(data)
+                              
+
+                              Materialize.toast('Details Found!', 4000, 'rounded')
+
+
+                            },
+                            error: function() {
+                              Materialize.toast('Cannot Fetch! Retry', 4500, 'rounded')
+                              
+                            }
+                         });
+                      }
+            getData1();
+
+		   });
+
+    }); 
+      </script>
+      <script>
+function demoFromHTML() {
+    console.log("pdf")
+    var pdf = new jsPDF('p', 'pt', 'letter');
+    source = $('#data2')[0];
+    specialElementHandlers = {
+        '#bypassme': function (element, renderer) {
+            return true
+        }
+    };
+    margins = {
+        top: 80,
+        bottom: 60,
+        left: 60,
+        width: 622
+    };
+    pdf.fromHTML(
+    source,
+    margins.left,
+    margins.top, {
+        'width': margins.width, 
+        'elementHandlers': specialElementHandlers
+    },
+
+    function (dispose) {
+        var s = localStorage.comp + '.pdf'
+        pdf.save(s);
+    }, margins);
+}
+    </script>
+  </body>
+</html>
+        
+
+
+ <!--  <div class="row"></div>
+  <div class="row container">
+     <div class="col s12 m6 hoverable">
+        <div class="card blue">
+           <div class="card-content white-text">
+              <span class="card-title">'+data[0].Name+'</span> 
+              <h6>'+data[0].Address+'</h6>
+              <h6>'+data[0].Cin+'</h6>
+              <h6>'+data[0].Class+'</h6>
+              <h6>'+data[0].Age+'</h6>
+           </div>
+        </div>
+     </div>
+     <div class="col s12 m6 hoverable">
+        <div class="card blue">
+           <div class="card-content white-text">
+              <span class="card-title">'+data[0].Status+'</span> 
+              <p>'+data[0].RoC+'</p>
+           </div>
+        </div>
+     </div>
+     <div class="col s12 m6 hoverable">
+        <div class="card blue">
+           <div class="card-content white-text">
+              <span class="card-title">'+data[0].Registration_No+'</span> 
+              <p>'+data[0].Registration_Date+'</p>
+           </div>
+        </div>
+     </div>
+     <div class="col s12 m6 hoverable">
+        <div class="card blue">
+           <div class="card-content white-text">
+              <span class="card-title">'+data[0].Category+'</span> 
+              <h6>'+data[0].Sub_Category+'</h6>
+              <h6>'+data[0].Listing_Type+'</h6>
+           </div>
+        </div>
+     </div>
+     <div class="col s12 m6 hoverable">
+        <div class="card blue">
+           <div class="card-content white-text">
+              <span class="card-title">'+data[0].Director_List+'</span> 
+              <h6>'+data[0].Authorised_Capital+'</h6>
+              <h6>'+data[0].Paid_Up_Capital+'</h6>
+           </div>
+        </div>
+     </div>
+  </div> -->
+
+<!-- 
+        <div class="col s12 m6 hoverable"> <div class="card blue"> <div class="card-content white-text"> <span class="card-title">'+data[0].Name+'</span> <p>'+data[0].Address+'</p> </div> <div class="card-tabs"> <ul class="tabs tabs-fixed-width tabs-transparent"> <li class="tab"><a href="#test1" class="">Cin</a></li> <li class="tab"><a class="" href="#test2">Class</a></li> <li class="tab"><a href="#test3" class="active">Age</a></li> <li class="indicator" style="right: 1px; left: 172px;"></li></ul> </div> <div class="card-content blue lighten-5"> <div id="test1" style="display: none;" class="">'+data[0].Cin+'</div> <div id="test2" class="" style="display: none;">'+data[0].Class+'</div> <div id="test3" style="" class="active">'+data[0].Age+'</div> </div> </div> </div> -->
+
+
+        <!-- <div class="row"></div> 
+        <div class="row container"> 
+        <div class="col s12 hoverable animated fadeIn">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Field</th>
+                    <th>Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Company Name</td>
+                    <td>'+data[0].Name+'</td>
+                  </tr>
+                  <tr>
+                    <td>Address</td>
+                    <td>'+data[0].Address+'</td>
+                  </tr>
+                  <tr>
+                    <td>CIN</td>
+                    <td>'+data[0].CIN+'</td>
+                  </tr>
+                  <tr>
+                    <td>Age</td>
+                    <td>'+data[0].Age+'</td>
+                  </tr>
+                  <tr>
+                    <td>Class</td>
+                    <td>'+data[0].Class+'</td>
+                  </tr>
+                  <tr>
+                    <td>Status</td>
+                    <td>'+data[0].Status+'</td>
+                  </tr>
+                  <tr>
+                    <td>RoC</td>
+                    <td>'+data[0].RoC+'</td>
+                  </tr>
+                  <tr>
+                    <td>Registration_No</td>
+                    <td>'+data[0].Registration_No+'</td>
+                  </tr>
+                  <tr>
+                    <td>Registration_Date</td>
+                    <td>'+data[0].Registration_Date+'</td>
+                  </tr>
+                  <tr>
+                    <td>Category</td>
+                    <td>'+data[0].Category+'</td>
+                  </tr>
+                  <tr>
+                    <td>Sub Category</td>
+                    <td>'+data[0].Sub_Category+'</td>
+                  </tr>
+                  <tr>
+                    <td>Listing Type</td>
+                    <td>'+data[0].Listing_Type+'</td>
+                  </tr>
+                  <tr>
+                    <td>Director List</td>
+                    <td>'+data[0].Director_List+'</td>
+                  </tr>
+                  <tr>
+                    <td>Authorised Capital</td>
+                    <td>'+data[0].Authorised_Capital+'</td>
+                  </tr>
+                  <tr>
+                    <td>Paid Up Capital</td>
+                    <td>'+data[0].Paid_Up_Capital+'</td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+        </div> -->
+
+        <!-- <div class="col s12 m6">
+                <div class="card-panel grey lighten-3 hoverable">
+                  <span class="edel-text">
+                    <h6>'+data[0].Name+'</h6>
+                    <h6>Address : '+data[0].Address+'</h6> 
+                    <h6>Cin :  '+data[0].CIN+'</h6>                     
+                  </span>
+                </div>
+              </div>
+              <div class="col s12 m6">
+                <div class="card-panel grey lighten-3 hoverable">
+                  <span class="edel-text"> 
+                    <h6>Activity :  '+data[0].Activity+'</h6> 
+                    <h6>Status :  '+data[0].Status+'</h6> 
+                    <h6>RoC :  '+data[0].RoC+'</h6>
+                    <h6>Class :  '+data[0].Class+'</h6>
+                  </span>
+                </div>
+              </div>
+              <div class="col s12 m6">
+                <div class="card-panel grey lighten-3 hoverable">
+                  <span class="edel-text"> 
+                    <h6>Registration Date :  '+data[0].Registration_Date+'</h6> 
+                    <h6>Registration No. :  '+data[0].Registration_No+'</h6> 
+                    <h6>Category :  '+data[0].Category+'</h6>
+                    <h6>Sub Category :  '+data[0].Sub_Category+'</h6>
+                  </span>
+                </div>
+              </div>
+              <div class="col s12 m6">
+                <div class="card-panel grey lighten-3 hoverable">
+                  <span class="edel-text"> 
+                    <h6>Director's :  '+data[0].Director_List+'</h6> 
+                    <h6>Authorised Capital :  '+data[0].Authorised_Capital+'</h6> 
+                    <h6>Paid Up Capital :  '+data[0].Paid_Up_Capital+'</h6>
+                    <h6>Listing Type :  '+data[0].Listing_Type+'</h6>
+                  </span>
+                </div>
+              </div>
+              <div class="col s12 m6">
+                <div class="card-panel grey lighten-3 hoverable">
+                  <span class="edel-text"> 
+                    <h6>Director's :  '+data[0].Director_List+'</h6>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+
+
+         <!--  <div class="col s12 m12">
+                <div class="col s1 m1">
+                  <div style="height: 55px;width: 55px;border-radius: 50%" class="edel-blue white-text valign-wrapper"><h4>&nbsp;&nbsp;'+data[0].Address[0]+'</h4>                
+                  </div>
+                </div>
+                <div class="col s11 m11">
+                  <h5><b>'+data[0].Name+'</b></h5>                  
+                </div>                
+              </div>
+              <div class="col s12 m6">
+                <div class="card-panel white hoverable" style="padding-top: 8px;">
+                  <table class="striped bordered">
+                    <tbody>
+                      <tr>
+                        <td><b>Address</b></td>
+                        <td>'+data[0].Address+'</td>
+                      </tr>
+                      <tr>
+                        <td><b>Category</b></td>
+                        <td>'+data[0].Category+'</td>
+                      </tr>
+                      <tr>
+                        <td><b>Sub Category</b></td>
+                        <td>'+data[0].Sub_Category+'</td>
+                      </tr>  
+                    </tbody>
+                  </table>
+                  <hr>
+                  <table class="striped">
+                    <tbody>
+                      <tr>
+                        <td><b>CIN</b></td>
+                        <td>'+data[0].CIN+'</td>
+                      </tr>
+                      <tr>
+                        <td><b>Registration No</b></td>
+                        <td>'+data[0].Registration_No+'</td>
+                      </tr>
+                      <tr>
+                        <td><b>Registration_Date</b></td>
+                        <td>'+data[0].Registration_Date+'</td>
+                      </tr>
+                      <tr>
+                        <td><b>Authorised Capital</b></td>
+                        <td>'+data[0].Authorised_Capital+'</td>
+                      </tr>
+                      <tr>
+                        <td><b>Paid Up Capital</b></td>
+                        <td>'+data[0].Paid_Up_Capital+'</td>
+                      </tr>  
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="col s12 m6">
+                <div class="card-panel white hoverable" style="padding-top: 8px;">
+                  <table class="striped bordered">
+                    <tbody>
+                      <tr>
+                        <td><b>Status</b></td>
+                        <td>'+data[0].Status+'</td>
+                      </tr>
+                      <tr>
+                        <td><b>RoC</b></td>
+                        <td>'+data[0].RoC+'</td>
+                      </tr>
+                      <tr>
+                        <td><b>Class</b></td>
+                        <td>'+data[0].Class+'</td>
+                      </tr>
+                      <tr>
+                        <td><b>Activity</b></td>
+                        <td>'+data[0].Activity+'</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <hr>
+                  <table class="striped bordered">
+                    <tbody>
+                      <tr>
+                        <td><b>Listing Type</b></td>
+                        <td>'+data[0].Listing_Type+'</td>
+                      </tr>
+                      <tr>
+                        <td><b>Date Last AGM</b></td>
+                        <td>'+data[0].Date_Last_AGM+'</td>
+                      </tr>
+                      <tr>
+                        <td><b>Balance Sheet Date</b></td>
+                        <td>'+data[0].Balance_Sheet_Date+'</td>
+                      </tr>  
+                    </tbody>
+                  </table>  
+                  <hr>
+                  <table class="striped bordered">
+                    <tbody>
+                      <tr>
+                        <td><b>Director List</b></td>
+                        <td>'+data[0].Director_List+'</td>
+                      </tr>
+                    </tbody>
+                  </table>                 
+                </div>
+              </div>  -->
